@@ -65,9 +65,9 @@ export default function TodoForm() {
           name="task"
           render={({ field, formState: { errors } }) => (
             <FormItem>
-              <FormLabel>Task</FormLabel>
+              <FormLabel className="text-lg font-semibold">Task</FormLabel>
               <FormControl>
-                <Input className="w-full" placeholder="Enter task name" {...field} />
+                <Input className="w-full rounded-none" placeholder="Enter task name" {...field} />
               </FormControl>
               {
                 errors.task ? <FormMessage className="h-2"/> : <div className="h-2"/>
@@ -82,13 +82,13 @@ export default function TodoForm() {
             name="category"
             render={({ field, formState: { errors } }) => (
               <FormItem>
-                <FormLabel>Category</FormLabel>
+                <FormLabel className="text-lg font-semibold">Category</FormLabel>
                 <FormControl>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className="w-full rounded-none cursor-pointer">
                       <SelectValue placeholder="Select a category" />
                     </SelectTrigger>
                     <SelectContent>
@@ -110,13 +110,13 @@ export default function TodoForm() {
             name="priority"
             render={({ field, formState: { errors } }) => (
               <FormItem>
-                <FormLabel>Priority</FormLabel>
+                <FormLabel className="text-lg font-semibold">Priority</FormLabel>
                 <FormControl>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className="w-full rounded-none cursor-pointer">
                       <SelectValue placeholder="Select priority" />
                     </SelectTrigger>
                     <SelectContent>
@@ -140,10 +140,10 @@ export default function TodoForm() {
           name="description"
           render={({ field, formState: { errors } }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel className="text-lg font-semibold">Description</FormLabel>
               <FormControl>
                 <Textarea
-                  className="w-full min-h-[80px]"
+                  className="w-full min-h-[80px] rounded-none"
                   placeholder="Enter task description"
                   {...field}
                 />
@@ -155,8 +155,8 @@ export default function TodoForm() {
           )}
         />
 
-        <Button type="submit" className="w-full">
-          Add Task
+        <Button type="submit" className="w-full rounded-none cursor-pointer">
+          Add Todo
         </Button>
       </form>
     </Form>
