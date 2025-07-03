@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -23,6 +22,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { CATEGORIES, PRIORITIES } from "@/constants/todo.constants";
+import { TodoInterface } from "@/interface/todo.interface";
 
 const formSchema = z.object({
   task: z.string().min(1, {
@@ -39,7 +40,7 @@ const formSchema = z.object({
   }),
 });
 
-export default function TodoForm() {
+export default function TodoForm({ onAddTodo }: { onAddTodo: (todo: TodoInterface) => void }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,7 +52,21 @@ export default function TodoForm() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    onAddTodo({
+      id: Date.now().toString(),
+      title: values.task,
+      description: values.description,
+      category: values.category as "personal" | "work" | "study" | "health" | "finance" | "other",
+      priority: values.priority as "low" | "medium" | "high",
+      completed: false,
+    });
+
+    form.reset({
+      task: "",
+      description: "",
+      category: "",
+      priority: "",
+    });
   }
 
   return (
@@ -92,9 +107,11 @@ export default function TodoForm() {
                       <SelectValue placeholder="Select a category" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="work">Work</SelectItem>
-                      <SelectItem value="personal">Personal</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
+                      {CATEGORIES.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -120,10 +137,11 @@ export default function TodoForm() {
                       <SelectValue placeholder="Select priority" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="low">Low</SelectItem>
-                      <SelectItem value="medium">Medium</SelectItem>
-                      <SelectItem value="high">High</SelectItem>
-                      <SelectItem value="urgent">Urgent</SelectItem>
+                      {PRIORITIES.map((priority) => (
+                        <SelectItem key={priority} value={priority}>
+                          {priority}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormControl>

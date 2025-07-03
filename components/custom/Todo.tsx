@@ -8,22 +8,16 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { LucideCheck, Circle, Trash2, Pencil } from "lucide-react";
-
-interface TodoProps {
-  title: string;
-  description: string;
-  completed?: boolean;
-  priority?: "low" | "medium" | "high";
-  category?: string;
-}
+import { TodoInterface } from "@/interface/todo.interface";
 
 const Todo = ({
+  id,
   title,
   description,
-  completed = false,
-  priority = "medium",
-  category = "personal",
-}: TodoProps) => {
+  completed,
+  priority,
+  category,
+}: TodoInterface) => {
   const [isCompleted, setIsCompleted] = useState(completed);
 
   const getPriorityColor = (priority: string) => {
