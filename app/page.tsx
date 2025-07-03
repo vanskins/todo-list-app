@@ -40,6 +40,8 @@ export default function Home() {
               completed={todo.completed}
               priority={todo.priority}
               category={todo.category}
+              onDeleteTodo={handleDeleteTodo}
+              onUpdateTodo={handleUpdateTodo}
             />
           ))}
         </div>

@@ -8,7 +8,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { LucideCheck, Circle, Trash2, Pencil } from "lucide-react";
-import { TodoInterface } from "@/interface/todo.interface";
+import { TodoFunctionInterface } from "@/interface/todo.interface";
 
 const Todo = ({
   id,
@@ -17,7 +17,9 @@ const Todo = ({
   completed,
   priority,
   category,
-}: TodoInterface) => {
+  onDeleteTodo,
+  onUpdateTodo,
+}: TodoFunctionInterface) => {
   const [isCompleted, setIsCompleted] = useState(completed);
 
   const getPriorityColor = (priority: string) => {
@@ -89,10 +91,17 @@ const Todo = ({
             >
               {category}
             </span>
-            <button className="w-5 h-5 cursor-pointer">
+            <button className="w-5 h-5 cursor-pointer" onClick={() => onDeleteTodo(id)}>
               <Trash2 className="w-full h-full text-gray-500 hover:text-red-500 transition-colors duration-200" />
             </button>
-            <button className="w-5 h-5 cursor-pointer">
+            <button className="w-5 h-5 cursor-pointer" onClick={() => onUpdateTodo(id, {
+              id,
+              title,
+              description,
+              completed,
+              priority,
+              category,
+            })}>
               <Pencil className="w-full h-full text-gray-500 hover:text-blue-500 transition-colors duration-200" />
             </button>
             <button
