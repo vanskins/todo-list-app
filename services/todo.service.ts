@@ -16,7 +16,7 @@ export const deleteTodo = async (id: string) => {
   return response.data;
 };
 
-export const updateTodo = async (id: string, todo: TodoInterface) => {
+export const updateTodo = async (id: string, todo: Partial<TodoInterface>) => {
   const response = await api.put(`/todos/${id}`, todo);
   return response.data;
 };

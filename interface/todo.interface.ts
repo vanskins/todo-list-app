@@ -12,5 +12,5 @@ export interface TodoInterface {
 
 export interface TodoFunctionInterface extends TodoInterface {
   onDeleteTodo: (id: string) => void;
-  onUpdateTodo: (id: string, updatedTodo: TodoInterface) => void;
+  onUpdateTodo: (id: string, updatedTodo: Partial<TodoInterface>) => void;
 }

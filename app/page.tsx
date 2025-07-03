@@ -10,29 +10,43 @@ import { getTodos, createTodo, deleteTodo, updateTodo } from "@/services/todo.se
 export default function Home() {
   const [todos, setTodos] = useState<TodoInterface[]>([]);
 
+  const fetchTodos = async () => {
+    try {
+      const response = await getTodos();
+      setTodos(response);
+    } catch (error) {
+      console.error("Error fetching todos:", error);
+    }
+  };
+
   const handleAddTodo = async (newTodo: TodoInterface) => {
-    const response = await createTodo(newTodo);
-    setTodos([...todos, response]);
+    try {
+      await createTodo(newTodo);
+      fetchTodos();
+    } catch (error) {
+      console.error("Error adding todo:", error);
+    }
   };
 
   const handleDeleteTodo = async (id: string) => {
-    const updatedTodos = todos.filter((todo) => todo.id !== id);
-    setTodos(updatedTodos);
-    await deleteTodo(id);
+    try {
+      await deleteTodo(id);
+      fetchTodos();
+    } catch (error) {
+      console.error("Error deleting todo:", error);
+    }
   };
 
-  const handleUpdateTodo = (id: string, updatedTodo: TodoInterface) => {
-    const updatedTodos = todos.map((todo) =>
-      todo.id === id ? updatedTodo : todo
-    );
-    setTodos(updatedTodos);
+  const handleUpdateTodo = async (id: string, updatedTodo: Partial<TodoInterface>) => {
+    try {
+      await updateTodo(id, updatedTodo);
+      fetchTodos();
+    } catch (error) {
+      console.error("Error updating todo:", error);
+    }
   };
 
   useEffect(() => {
-    const fetchTodos = async () => {
-      const response = await getTodos();
-      setTodos(response);
-    };
     fetchTodos();
   }, []);
 

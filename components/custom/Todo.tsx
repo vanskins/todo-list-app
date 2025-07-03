@@ -94,16 +94,6 @@ const Todo = ({
             <button className="w-5 h-5 cursor-pointer" onClick={() => onDeleteTodo(id)}>
               <Trash2 className="w-full h-full text-gray-500 hover:text-red-500 transition-colors duration-200" />
             </button>
-            <button className="w-5 h-5 cursor-pointer" onClick={() => onUpdateTodo(id, {
-              id,
-              title,
-              description,
-              is_completed,
-              priority,
-              category,
-            })}>
-              <Pencil className="w-full h-full text-gray-500 hover:text-blue-500 transition-colors duration-200" />
-            </button>
             <button
               className={`
               w-5 h-5 rounded-full border-2 flex-shrink-0 cursor-pointer
@@ -113,7 +103,12 @@ const Todo = ({
                   : "border-gray-300"
               }
             `}
-              onClick={() => setIsCompleted(!isCompleted)}
+              onClick={() => {
+                setIsCompleted(!isCompleted);
+                onUpdateTodo(id, {
+                  is_completed: !isCompleted,
+                });
+              }}
             >
               {isCompleted && (
                 <LucideCheck className="w-full h-full text-white" />
