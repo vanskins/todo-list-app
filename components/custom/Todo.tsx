@@ -14,13 +14,13 @@ const Todo = ({
   id,
   title,
   description,
-  completed,
+  is_completed,
   priority,
   category,
   onDeleteTodo,
   onUpdateTodo,
 }: TodoFunctionInterface) => {
-  const [isCompleted, setIsCompleted] = useState(completed);
+  const [isCompleted, setIsCompleted] = useState(is_completed);
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -98,7 +98,7 @@ const Todo = ({
               id,
               title,
               description,
-              completed,
+              is_completed,
               priority,
               category,
             })}>

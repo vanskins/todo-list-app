@@ -55,7 +55,7 @@ export default function TodoForm({ onAddTodo }: { onAddTodo: (todo: TodoInterfac
       description: values.description,
       category: values.category,
       priority: values.priority,
-      completed: false,
+      is_completed: false,
     });
 
     form.reset({

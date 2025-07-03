@@ -3,19 +3,22 @@
 import TodoForm from "@/components/custom/Form";
 import BaseLayout from "@/components/custom/BaseLayout";
 import Todo from "@/components/custom/Todo";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TodoInterface } from "@/interface/todo.interface";
+import { getTodos, createTodo, deleteTodo, updateTodo } from "@/services/todo.service";
 
 export default function Home() {
   const [todos, setTodos] = useState<TodoInterface[]>([]);
 
-  const handleAddTodo = (newTodo: TodoInterface) => {
-    setTodos([...todos, newTodo]);
+  const handleAddTodo = async (newTodo: TodoInterface) => {
+    const response = await createTodo(newTodo);
+    setTodos([...todos, response]);
   };
 
-  const handleDeleteTodo = (id: string) => {
+  const handleDeleteTodo = async (id: string) => {
     const updatedTodos = todos.filter((todo) => todo.id !== id);
     setTodos(updatedTodos);
+    await deleteTodo(id);
   };
 
   const handleUpdateTodo = (id: string, updatedTodo: TodoInterface) => {
@@ -24,6 +27,14 @@ export default function Home() {
     );
     setTodos(updatedTodos);
   };
+
+  useEffect(() => {
+    const fetchTodos = async () => {
+      const response = await getTodos();
+      setTodos(response);
+    };
+    fetchTodos();
+  }, []);
 
   return (
     <BaseLayout>
@@ -37,7 +48,7 @@ export default function Home() {
               id={todo.id}
               title={todo.title}
               description={todo.description}
-              completed={todo.completed}
+              is_completed={todo.is_completed}
               priority={todo.priority}
               category={todo.category}
               onDeleteTodo={handleDeleteTodo}
