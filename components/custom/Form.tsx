@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/select";
 import { CATEGORIES, PRIORITIES } from "@/constants/todo.constants";
 import { TodoInterface } from "@/interface/todo.interface";
+import { Category, Priority } from "@/interface/todo.interface";
 
 const formSchema = z.object({
   task: z.string().min(1, {
@@ -32,12 +33,8 @@ const formSchema = z.object({
   description: z.string().min(1, {
     message: "Description is required",
   }),
-  category: z.string().min(1, {
-    message: "Category is required",
-  }),
-  priority: z.string().min(1, {
-    message: "Priority is required",
-  }),
+  category: z.enum(CATEGORIES as [Category, ...Category[]]),
+  priority: z.enum(PRIORITIES as [Priority, ...Priority[]]),
 });
 
 export default function TodoForm({ onAddTodo }: { onAddTodo: (todo: TodoInterface) => void }) {
@@ -46,8 +43,8 @@ export default function TodoForm({ onAddTodo }: { onAddTodo: (todo: TodoInterfac
     defaultValues: {
       task: "",
       description: "",
-      category: "",
-      priority: "",
+      category: CATEGORIES[0] as Category,
+      priority: PRIORITIES[0] as Priority,
     },
   });
 
@@ -56,16 +53,16 @@ export default function TodoForm({ onAddTodo }: { onAddTodo: (todo: TodoInterfac
       id: Date.now().toString(),
       title: values.task,
       description: values.description,
-      category: values.category as "personal" | "work" | "study" | "health" | "finance" | "other",
-      priority: values.priority as "low" | "medium" | "high",
+      category: values.category,
+      priority: values.priority,
       completed: false,
     });
 
     form.reset({
       task: "",
       description: "",
-      category: "",
-      priority: "",
+      category: CATEGORIES[0] as Category,
+      priority: PRIORITIES[0] as Priority,
     });
   }
 
