@@ -5,10 +5,23 @@ import BaseLayout from "@/components/custom/BaseLayout";
 import Todo from "@/components/custom/Todo";
 import { useState, useEffect } from "react";
 import { TodoInterface } from "@/interface/todo.interface";
-import { getTodos, createTodo, deleteTodo, updateTodo } from "@/services/todo.service";
+import {
+  getTodos,
+  createTodo,
+  deleteTodo,
+  updateTodo,
+} from "@/services/todo.service";
+import Sort from "@/components/custom/Sort";
 
 export default function Home() {
   const [todos, setTodos] = useState<TodoInterface[]>([]);
+  const [sort, setSort] = useState<{
+    direction: "asc" | "desc";
+    field: string;
+  }>({
+    direction: "asc",
+    field: "name",
+  });
 
   const fetchTodos = async () => {
     try {
@@ -37,13 +50,20 @@ export default function Home() {
     }
   };
 
-  const handleUpdateTodo = async (id: string, updatedTodo: Partial<TodoInterface>) => {
+  const handleUpdateTodo = async (
+    id: string,
+    updatedTodo: Partial<TodoInterface>,
+  ) => {
     try {
       await updateTodo(id, updatedTodo);
       fetchTodos();
     } catch (error) {
       console.error("Error updating todo:", error);
     }
+  };
+
+  const handleSort = (direction: "asc" | "desc", field: string) => {
+    setSort({ direction, field });
   };
 
   useEffect(() => {
@@ -56,6 +76,26 @@ export default function Home() {
         <h1 className="text-4xl font-bold text-left">Todo list app</h1>
         <TodoForm onAddTodo={handleAddTodo} />
         <div className="space-y-6 w-full max-w-2xl">
+          <div className="flex gap-4">
+            <Sort
+              direction={sort.direction}
+              label="name"
+              field={sort.field}
+              onSort={handleSort}
+            />
+            <Sort
+              direction={sort.direction}
+              label="priority"
+              field={sort.field}
+              onSort={handleSort}
+            />
+            <Sort
+              direction={sort.direction}
+              label="date"
+              field={sort.field}
+              onSort={handleSort}
+            />
+          </div>
           {todos.map((todo) => (
             <Todo
               key={todo.id}
