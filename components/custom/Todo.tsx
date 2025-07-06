@@ -105,9 +105,7 @@ const Todo = ({
             `}
               onClick={() => {
                 setIsCompleted(!isCompleted);
-                onUpdateTodo(id, {
-                  is_completed: !isCompleted,
-                });
+                onUpdateTodo(id);
               }}
             >
               {isCompleted && (

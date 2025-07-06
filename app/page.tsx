@@ -3,18 +3,13 @@
 import TodoForm from "@/components/custom/Form";
 import BaseLayout from "@/components/custom/BaseLayout";
 import Todo from "@/components/custom/Todo";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { TodoInterface } from "@/interface/todo.interface";
-import {
-  getTodos,
-  createTodo,
-  deleteTodo,
-  updateTodo,
-} from "@/services/todo.service";
 import Sort from "@/components/custom/Sort";
+import { useTodos } from "@/hooks/todoLocalStorage";
+import { toast } from "sonner";
 
 export default function Home() {
-  const [todos, setTodos] = useState<TodoInterface[]>([]);
   const [sort, setSort] = useState<{
     direction: "asc" | "desc";
     field: string;
@@ -22,53 +17,59 @@ export default function Home() {
     direction: "asc",
     field: "name",
   });
-
-  const fetchTodos = async () => {
-    try {
-      const response = await getTodos();
-      setTodos(response);
-    } catch (error) {
-      console.error("Error fetching todos:", error);
-    }
-  };
+  const { addTodo, toggleTodo, deleteTodo: deleteTodoLocalStorage, todos: allTodos } = useTodos();
 
   const handleAddTodo = async (newTodo: TodoInterface) => {
     try {
-      await createTodo(newTodo);
-      fetchTodos();
+      addTodo(newTodo);
+      toast.success("Todo added successfully", {
+        duration: 1000,
+        position: "top-center",
+      });
     } catch (error) {
       console.error("Error adding todo:", error);
+      toast.error("Error adding todo", {
+        duration: 1000,
+        position: "top-center",
+      });
     }
   };
 
   const handleDeleteTodo = async (id: string) => {
     try {
-      await deleteTodo(id);
-      fetchTodos();
+      deleteTodoLocalStorage(id);
+      toast.success("Todo deleted successfully", {
+        duration: 1000,
+        position: "top-center",
+      });
     } catch (error) {
       console.error("Error deleting todo:", error);
+      toast.error("Error deleting todo", {
+        duration: 1000,
+        position: "top-center",
+      });
     }
   };
 
-  const handleUpdateTodo = async (
-    id: string,
-    updatedTodo: Partial<TodoInterface>,
-  ) => {
+  const handleUpdateTodo = async (id: string) => {
     try {
-      await updateTodo(id, updatedTodo);
-      fetchTodos();
+      toggleTodo(id);
+      toast.success("Todo updated successfully", {
+        duration: 1000,
+        position: "top-center",
+      });
     } catch (error) {
       console.error("Error updating todo:", error);
+      toast.error("Error updating todo", {
+        duration: 1000,
+        position: "top-center",
+      });
     }
   };
 
   const handleSort = (direction: "asc" | "desc", field: string) => {
     setSort({ direction, field });
   };
-
-  useEffect(() => {
-    fetchTodos();
-  }, []);
 
   return (
     <BaseLayout>
@@ -96,7 +97,7 @@ export default function Home() {
               onSort={handleSort}
             />
           </div>
-          {todos.map((todo) => (
+          {allTodos.map((todo) => (
             <Todo
               key={todo.id}
               id={todo.id}
