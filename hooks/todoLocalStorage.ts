@@ -29,9 +29,7 @@ export function useTodos() {
   };
 
   const deleteTodo = async (id: string) => {
-    console.log("deleteTodo", id);
-    const deleted = await todos.delete(id);
-    console.log("deleted", deleted);
+    await todos.delete(id);
     setAllTodos(await todos.toArray());
   };
 

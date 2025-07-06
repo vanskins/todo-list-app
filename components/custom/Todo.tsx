@@ -7,7 +7,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { LucideCheck, Circle, Trash2, Pencil } from "lucide-react";
+import { LucideCheck, Circle, Trash2 } from "lucide-react";
 import { TodoFunctionInterface } from "@/interface/todo.interface";
 
 const Todo = ({
