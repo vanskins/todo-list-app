@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { SortAsc, SortDesc } from "lucide-react";
 
 const Sort = ({
@@ -14,22 +13,25 @@ const Sort = ({
   onSort: (direction: "asc" | "desc", field: string) => void;
   label: string;
 }) => {
-  useEffect(() => {
-    onSort(direction, field);
-  }, [direction, field]);
+  const isActive = field === label;
+  const nextDirection = direction === "asc" ? "desc" : "asc";
 
   return (
-    <div className="flex items-center gap-2">
-      <button
-        className="flex items-center gap-2 cursor-pointer hover:text-blue-400 hover:border-blue-400 transition-all duration-300"
-        onClick={() => {
-          onSort(direction === "asc" ? "desc" : "asc", label);
-        }}
-      >
-        <span className="text-md font-semibold">{label}</span>
-        {direction === "asc" && field === label ? <SortAsc /> : <SortDesc />}
-      </button>
-    </div>
+    <button
+      className={`flex items-center gap-1 px-2 py-1 rounded text-sm font-medium transition-colors ${
+        isActive
+          ? "text-blue-600 bg-blue-50 hover:bg-blue-100"
+          : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+      }`}
+      onClick={() => onSort(nextDirection, label)}
+    >
+      <span>{label}</span>
+      {isActive ? (
+        direction === "asc" ? <SortAsc size={16} /> : <SortDesc size={16} />
+      ) : (
+        <SortAsc size={16} className="opacity-30" />
+      )}
+    </button>
   );
 };
 
